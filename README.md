@@ -69,6 +69,9 @@ A clean layout to help you navigate the codebase:
 / (project root)
 ├─ app.js                # Express app setup (middleware, routes)
 ├─ server.js             # Server bootstrap
+├─ tests/                # Test cases (Jest)
+│  ├─ Link.test.js
+│  └─ User.test.js
 ├─ package.json
 ├─ .env                  # Environment variables (not committed)
 ├─ src/
