@@ -24,7 +24,7 @@ A lightweight, secure, and modular backend for a URL shortener service. Linkly p
 | Logging | Morgan |
 | Dev Tools | Nodemon, ESLint, Prettier |
 | Environment | dotenv |
-| Testing (suggested) | Jest  |
+| Testing | Jest  |
 
 ---
 
@@ -133,8 +133,8 @@ MIT License — feel free to use, modify, and distribute. See LICENSE for full t
 ## Author
 
 Anurag Singh  
-GitHub: https://github.com/<your-username>  
-LinkedIn: https://www.linkedin.com/in/<your-profile>
+GitHub: https://github.com/ThAnurag2004  
+LinkedIn: https://www.linkedin.com/in/anurxg
 
 ---
 
