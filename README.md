@@ -73,19 +73,19 @@ A clean layout to help you navigate the codebase:
 ├─ .env                  # Environment variables (not committed)
 ├─ src/
 │  ├─ routes/
-│  │  ├─ index.js
-│  │  └─ links.js
+│  │  ├─ User.route.js
+│  │  └─ Links.route.js
 │  ├─ controllers/
-│  │  └─ link.controller.js
+│  │  └─ Link.controller.js
 │  ├─ models/
-│  │  └─ Link.js
+│  │  └─ Link.model.js
 │  ├─ middleware/
 │  │  ├─ errorHandler.js
 │  │  └─ validate.js
 │  ├─ services/
 │  │  └─ analytics.service.js
 │  └─ utils/
-│     └─ shortId.js
+│     └─ generateShortId.js
 ├─ config/
 │  └─ db.js
 └─ README.md
