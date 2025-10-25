@@ -1,5 +1,6 @@
 import Link from '../models/Link.model.js';
 import Click from '../models/Click.model.js';
+import 'dotenv/config';
 import useragent from 'useragent';
 import geoip from 'geoip-lite';
 import { generateShortId } from '../utils/generateShortId.js';
@@ -18,13 +19,29 @@ export const createShortUrl = async (req, res) => {
       return res.status(400).json({ error: 'Invalid URL format (must start with http or https)' });
     }
 
+    const cleanedUrl = originalUrl.trim();
+
+    // checking if the url exists or not in the db and returning the short code if it exists
+    const link = await Link.findOne({ originalUrl: cleanedUrl });
+    if (link) {
+      const fullShortUrl = `${process.env.BASE_URI}/${link.shortId}`;
+      return res.status(409).json({
+        message: 'URL already shortened',
+        data: { ...link.toObject(), shortUrl: fullShortUrl },
+      });
+    }
+
     // shortId generation
     const shortId = generateShortId(7);
 
     // newLink creation
-    const newLink = await Link.create({ originalUrl, shortId });
+    const newLink = await Link.create({ originalUrl: cleanedUrl, shortId });
+    const fullShortUrl = `${process.env.BASE_URI}/${shortId}`;
 
-    res.status(201).json(newLink);
+    res.status(201).json({
+      message: 'Short URL created successfully',
+      data: { ...newLink.toObject(), shortUrl: fullShortUrl },
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
