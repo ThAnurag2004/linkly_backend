@@ -7,7 +7,7 @@ import { generateShortId } from '../utils/generateShortId.js';
 
 export const createShortUrl = async (req, res) => {
   try {
-    const { originalUrl } = req.body;
+    const { originalUrl, customAlias } = req.body;
 
     // blank or empty url validation
     if (!originalUrl || originalUrl.trim() === '') {
@@ -32,7 +32,7 @@ export const createShortUrl = async (req, res) => {
     }
 
     // shortId generation
-    const shortId = generateShortId(7);
+    const shortId = customAlias || generateShortId(7);
 
     // newLink creation
     const newLink = await Link.create({ originalUrl: cleanedUrl, shortId });
