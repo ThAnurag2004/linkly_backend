@@ -36,7 +36,7 @@ export const createShortUrl = async (req, res) => {
 
     // newLink creation
     const newLink = await Link.create({ originalUrl: cleanedUrl, shortId });
-    const fullShortUrl = `${process.env.BASE_URI}/${shortId}`;
+    const fullShortUrl = `${process.env.BASE_URI}${shortId}`;
 
     res.status(201).json({
       message: 'Short URL created successfully',
