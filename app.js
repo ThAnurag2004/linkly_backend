@@ -9,8 +9,4 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(helmet());
 
-app.get('/', (req, res) => {
-  res.send('URL shortner is running');
-});
-
 export default app;
