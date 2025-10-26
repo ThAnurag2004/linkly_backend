@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import User from '../models/User.model.js';
+import * as UserService from '../services/user.service.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 
 export const login = async (req, res) => {
   try {
@@ -13,22 +13,18 @@ export const login = async (req, res) => {
     }
 
     // Check if user exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await UserService.findUserByEmail(email);
     if (!existingUser || !(await bcrypt.compare(password, existingUser.password)))
       return res.status(404).json({ error: 'User Not Found' });
 
     // Checking is password correct
-    const isPasswordValid = await bcrypt.compare(password, existingUser.password);
+    const isPasswordValid = await UserService.validatePassword(password, existingUser.password);
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // jwt token generate
-    const token = jwt.sign(
-      { _id: existingUser._id, email: existingUser.email },
-      process.env.JWT_SECRET || 'mysecret',
-      { expiresIn: '1h' }
-    );
+    const token = UserService.generateToken(existingUser);
 
     // sending response
     return res.status(200).json({
@@ -53,20 +49,13 @@ export const register = async (req, res) => {
       return res.status(400).json({ error: 'Please fill all the required details' });
     }
 
-    const existingUser = await User.findOne({ email });
+    const existingUser = await UserService.findUserByEmail(email);
 
     if (existingUser) {
       return res.status(409).json({ error: 'User already exists, please login' });
     }
 
-    const saltRounds = 7;
-    const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-    const newUser = await User.create({
-      name,
-      email,
-      password: hashedPassword,
-    });
+    const newUser = await UserService.createUser(name, email, password);
 
     return res.status(201).json({
       message: 'User created successfully',
@@ -85,7 +74,7 @@ export const profile = async (req, res) => {
       return res.status(401).json({ error: 'Please login with valid credentials' });
     }
 
-    const userDetails = await User.findById(user_id).select('-password');
+    const userDetails = await UserService.getUserById(user_id);
 
     if (!userDetails) {
       return res.status(404).json({ error: 'User not found' });
