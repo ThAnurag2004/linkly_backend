@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 import cors from 'cors';
 import linkRoutes from './src/routes/Link.route.js';
+import userRoutes from './src/routes/User.route.js';
 
 const app = express();
 
@@ -13,5 +14,6 @@ app.use(helmet());
 app.use(cors());
 
 app.use('/', linkRoutes);
+app.use('/user', userRoutes);
 
 export default app;
