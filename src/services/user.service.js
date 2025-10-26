@@ -1,6 +1,7 @@
 import User from '../models/User.model.js';
-import bcrypt from 'bcrypt';
+import { hash } from '../utils/generateHashPassword.js';
 import jwt from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
 
 export const findUserByEmail = async (email) => {
   return await User.findOne({ email });
@@ -17,8 +18,7 @@ export const generateToken = (user) => {
 };
 
 export const createUser = async (name, email, password) => {
-  const saltRounds = 7;
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
+  const hashedPassword = await hash(password);
   return await User.create({
     name,
     email,
