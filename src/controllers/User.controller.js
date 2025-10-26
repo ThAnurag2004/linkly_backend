@@ -1,5 +1,4 @@
 import 'dotenv/config';
-import User from '../models/User.model.js';
 import * as UserService from '../services/user.service.js';
 import bcrypt from 'bcrypt';
 
