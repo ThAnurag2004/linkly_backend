@@ -77,4 +77,22 @@ export const register = async (req, res) => {
   }
 };
 
-// export const profile = async (req, res) => { };
+export const profile = async (req, res) => {
+  try {
+    const user_id = req.user._id;
+
+    if (!user_id) {
+      return res.status(401).json({ error: 'Please login with valid credentials' });
+    }
+
+    const userDetails = await User.findById(user_id).select('-password');
+
+    if (!userDetails) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    return res.status(200).json({ message: 'user found', userDetails });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
