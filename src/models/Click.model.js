@@ -1,3 +1,4 @@
+// models/Click.model.js
 import mongoose from 'mongoose';
 
 const clickSchema = new mongoose.Schema(
@@ -5,24 +6,13 @@ const clickSchema = new mongoose.Schema(
     link: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Link',
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    ip: {
-      type: String,
       required: true,
     },
-    country: {
-      type: String,
-      required: true,
-    },
-    userAgent: {
-      type: String,
-    },
+    ip: { type: String },
+    country: { type: String, default: 'Unknown' },
+    userAgent: { type: String },
   },
-  { timestamps: true }
+  { timestamps: true } // createdAt = click time
 );
 
 const Click = mongoose.model('Click', clickSchema);

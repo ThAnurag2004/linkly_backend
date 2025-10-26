@@ -90,3 +90,23 @@ export const redirectToOriginal = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const getAnalytics = async (req, res) => {
+  const { shortId } = req.params;
+
+  const link = await Link.findOne({ shortId });
+  if (!link) return res.status(404).json({ error: 'Link not found' });
+
+  const totalClicks = await Click.countDocuments({ link: link._id });
+
+  const clicksByCountry = await Click.aggregate([
+    { $match: { link: link._id } },
+    { $group: { _id: '$country', count: { $sum: 1 } } },
+  ]);
+
+  res.status(200).json({
+    shortId,
+    totalClicks,
+    clicksByCountry,
+  });
+};
