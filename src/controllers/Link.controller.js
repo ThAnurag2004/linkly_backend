@@ -7,6 +7,7 @@ import { generateShortId } from '../utils/generateShortId.js';
 
 export const createShortUrl = async (req, res) => {
   try {
+    const user_Id = req.user._id;
     const { originalUrl, customAlias } = req.body;
 
     // blank or empty url validation
@@ -35,7 +36,7 @@ export const createShortUrl = async (req, res) => {
     const shortId = customAlias || generateShortId(7);
 
     // newLink creation
-    const newLink = await Link.create({ originalUrl: cleanedUrl, shortId });
+    const newLink = await Link.create({ originalUrl: cleanedUrl, shortId, user_Id });
     const fullShortUrl = `${process.env.BASE_URI}${shortId}`;
 
     res.status(201).json({
